@@ -1,57 +1,144 @@
-<script>
-function iniciarWebex(destino) {
-    console.log('🔄 Iniciando WebEx para:', destino);
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneBank - Banco Digital</title>
     
-    // Validar que WebEx esté cargado
-    if (typeof Webex === 'undefined') {
-        alert('❌ Error: WebEx no está cargado. Verifica tu conexión.');
-        return;
-    }
+    <!-- SDK de WebEx -->
+    <script src="https://binaries.webex.com/static-content-pipeline/webex-embedded-app/v1/webex-embedded-app-sdk.js"></script>
     
-    try {
-        console.log('✅ WebEx SDK detectado');
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
         
-        // Configuración del meeting - FORMA CORRECTA
-        const webex = Webex.init({
-            config: {
-                meetings: {
-                    deviceType: 'WEB'
-                }
-            },
-            credentials: {
-                access_token: undefined // No necesita token para guest
-            }
-        });
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
         
-        console.log('✅ WebEx inicializado correctamente');
+        .webex-btn {
+            background-color: #00B0F0;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 20px 0;
+        }
         
-        // Crear reunión de forma directa
-        webex.meetings.create(destino).then(function(meeting) {
-            console.log('✅ Reunión creada:', meeting);
-            
-            // Unirse a la reunión
-            return meeting.join().then(function() {
-                console.log('✅ Unido a la reunión exitosamente');
-                alert('✅ Conectado con Sandy - Asesora OneBank');
+        .webex-btn:hover {
+            background-color: #0090C0;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+        }
+        
+        .correo-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏦 OneBank - Portal del Cliente</h1>
+            <p>Tu banco digital de confianza</p>
+        </header>
+
+        <main>
+            <section id="bienvenida">
+                <h2>Bienvenido a OneBank</h2>
+                <p>Para atención personalizada, hable con nuestra asesora:</p>
                 
-                // Opcional: Abrir en nueva pestaña
-                meeting.on('meeting:started', function() {
-                    console.log('🎥 Reunión iniciada');
+                <!-- Botón de WebEx -->
+                <button class="webex-btn" onclick="iniciarWebex('viwad69282@delab.com')">
+                    📞 Llamar a Sandy - Asesora Virtual
+                </button>
+                
+                <div class="correo-info">
+                    <strong>Correo destino:</strong> viwad69282@delab.com
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script de WebEx -->
+    <script>
+        function iniciarWebex(destino) {
+            console.log('🔄 Iniciando WebEx para:', destino);
+            
+            // Validar que WebEx esté cargado
+            if (typeof Webex === 'undefined') {
+                alert('❌ Error: WebEx no está cargado. Verifica tu conexión.');
+                return;
+            }
+            
+            try {
+                console.log('✅ WebEx SDK detectado');
+                
+                // Configuración del meeting - FORMA CORRECTA
+                const webex = Webex.init({
+                    config: {
+                        meetings: {
+                            deviceType: 'WEB'
+                        }
+                    },
+                    credentials: {
+                        access_token: undefined // No necesita token para guest
+                    }
                 });
                 
-            }).catch(function(joinError) {
-                console.error('❌ Error al unirse:', joinError);
-                alert('Error al unirse a la reunión: ' + joinError.message);
-            });
-            
-        }).catch(function(error) {
-            console.error('❌ Error al crear reunión:', error);
-            alert('No se pudo crear la reunión. Error: ' + error.message);
-        });
-        
-    } catch (error) {
-        console.error('❌ Error general:', error);
-        alert('Error al configurar WebEx: ' + error.message);
-    }
-}
-</script>
+                console.log('✅ WebEx inicializado correctamente');
+                
+                // Crear reunión de forma directa
+                webex.meetings.create(destino).then(function(meeting) {
+                    console.log('✅ Reunión creada:', meeting);
+                    
+                    // Unirse a la reunión
+                    return meeting.join().then(function() {
+                        console.log('✅ Unido a la reunión exitosamente');
+                        alert('✅ Conectado con Sandy - Asesora OneBank');
+                        
+                        // Opcional: Abrir en nueva pestaña
+                        meeting.on('meeting:started', function() {
+                            console.log('🎥 Reunión iniciada');
+                        });
+                        
+                    }).catch(function(joinError) {
+                        console.error('❌ Error al unirse:', joinError);
+                        alert('Error al unirse a la reunión: ' + joinError.message);
+                    });
+                    
+                }).catch(function(error) {
+                    console.error('❌ Error al crear reunión:', error);
+                    alert('No se pudo crear la reunión. Error: ' + error.message);
+                });
+                
+            } catch (error) {
+                console.error('❌ Error general:', error);
+                alert('Error al configurar WebEx: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
