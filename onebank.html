@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneBank - Banco Digital</title>
+    
+    <!-- SDK de WebEx -->
+    <script src="https://binaries.webex.com/static-content-pipeline/webex-embedded-app/v1/webex-embedded-app-sdk.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .webex-btn {
+            background-color: #00B0F0;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        
+        .webex-btn:hover {
+            background-color: #0090C0;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏦 OneBank - Portal del Cliente</h1>
+            <p>Tu banco digital de confianza</p>
+        </header>
+
+        <main>
+            <section id="bienvenida">
+                <h2>Bienvenido a OneBank</h2>
+                <p>Para atención personalizada, hable con nuestra asesora:</p>
+                
+                <!-- Botón de WebEx -->
+                <button class="webex-btn" onclick="iniciarWebex('correo.companero@dominio.com')">
+                    📞 Llamar a Sandy - Asesora Virtual
+                </button>
+                
+                <p><small>* Reemplaza " viwad69282@delab.com " con el correo real de tu compañero</small></p>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script de WebEx -->
+    <script>
+        function iniciarWebex(destino) {
+            console.log('🔄 Iniciando WebEx para:', destino);
+            
+            // Validar que WebEx esté cargado
+            if (typeof Webex === 'undefined') {
+                alert('❌ Error: WebEx no está cargado. Verifica tu conexión.');
+                return;
+            }
+            
+            try {
+                // Inicializar WebEx
+                Webex.init();
+                
+                console.log('✅ WebEx inicializado correctamente');
+                
+                // Configuración del meeting
+                const config = {
+                    destination: destino,
+                    destinationType: 'email',
+                    accessibilityFeatures: ['fullScreen', 'joinWithoutVideo'],
+                    meetingInviteTitle: 'OneBank - Asesoría Virtual'
+                };
+                
+                // Crear y unirse a la reunión
+                Webex.meetings.createMeetingWidget(config)
+                    .then(function(widget) {
+                        console.log('✅ Widget de WebEx creado');
+                        
+                        // Unirse automáticamente
+                        widget.join();
+                        
+                        // Manejar eventos
+                        widget.on('MEETING_JOINED', function() {
+                            console.log('✅ Te has unido a la reunión');
+                            alert('Conectado con Sandy - Asesora OneBank');
+                        });
+                        
+                        widget.on('MEETING_ENDED', function() {
+                            console.log('🔴 Reunión terminada');
+                            alert('Llamada finalizada. Gracias por contactar a OneBank.');
+                        });
+                        
+                        widget.on('ERROR', function(error) {
+                            console.error('❌ Error en WebEx:', error);
+                            alert('Error en la conexión: ' + error.message);
+                        });
+                        
+                    })
+                    .catch(function(error) {
+                        console.error('❌ Error al crear widget:', error);
+                        alert('No se pudo iniciar la videollamada. Error: ' + error.message);
+                    });
+                    
+            } catch (error) {
+                console.error('❌ Error general:', error);
+                alert('Error al configurar WebEx: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
